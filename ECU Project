@@ -1,1 +1,105 @@
 
+
+#include <iostream>
+using namespace std;
+
+class ElectronicControlUnit {
+
+public:
+  ElectronicControlUnit();          // construtor
+  ~ElectronicControlUnit();         // destrucor
+  void handleCommand(char command); 
+
+private:
+  bool m_bActivatedHydraulicsJacks;  // button a
+  bool m_bActivatedIRIllumination;               // button e
+  bool m_bActivatedBeltTires;        // button b
+ 
+  
+  void activateIRIllumination();              // function to activate IR
+void actuateHydroaulicsJacks(); // function to actuate hydroaulics jacks
+void activateBeltTires();       // function to activate belt tires
+};
+
+// Constructor
+ElectronicControlUnit::ElectronicControlUnit()
+    : m_bActivatedHydraulicsJacks(false), m_bActivatedIRIllumination(false), m_bActivatedBeltTires(false) {}
+
+// Destructor
+ElectronicControlUnit::~ElectronicControlUnit() {}
+
+void ElectronicControlUnit::handleCommand(
+    char command) {
+                    
+  switch (command) {
+  case 'A':
+    actuateHydroaulicsJacks();
+    break;
+  case 'B':
+    activateBeltTires();
+    break;
+  case 'E':
+    activateIRIllumination();
+    break;
+  case 'X':
+    exit(0); 
+    break;
+  default:
+    cout << "Invalid command. Please try again." << endl;
+  }
+}
+
+void ElectronicControlUnit::actuateHydroaulicsJacks() { // function to actuate
+                                                        // hydroaulics jacks
+  m_bActivatedHydraulicsJacks = !m_bActivatedHydraulicsJacks;
+
+  if (m_bActivatedHydraulicsJacks) {
+    cout << "Hydraulics Jacks activated." << endl;
+    // Deactivate Belt Tires when Jacks are activated
+    if (m_bActivatedBeltTires) {
+      m_bActivatedBeltTires = false;
+      cout << "Belt Tires deactivated." << endl;
+    }
+  } else {
+    cout << "Hydraulics Jacks deactivated." << endl;
+  }
+}
+
+void ElectronicControlUnit::activateBeltTires() { // function to activate belt
+                                                  // tires
+  m_bActivatedBeltTires = !m_bActivatedBeltTires;
+
+  if (m_bActivatedBeltTires)
+    cout << "Belt Tires activated." << endl;
+  else
+    cout << "Belt Tires deactivated." << endl;
+}
+void ElectronicControlUnit::activateIRIllumination() {
+  m_bActivatedIRIllumination = !m_bActivatedIRIllumination;
+
+  if (m_bActivatedIRIllumination)
+    cout << "Infrared lights activated." << endl;
+  else
+    cout << "Infrared lights deactivated." << endl;
+}
+
+int main() {
+  ElectronicControlUnit ecu;
+
+  while (true) {
+    char command;
+    cout << "Press x to turn off ignition or enter a steering wheel button (A, "
+            "B, E): "
+         << endl;
+    cout << "         (A)\n";
+    cout << "      (F)(G)(B)\n";
+    cout << "      (E)    (C)\n";
+    cout << "         (D)\n";
+    cout << ":";
+    cin >> command;
+
+    ecu.handleCommand(command);
+  }
+
+  return 0;
+}
