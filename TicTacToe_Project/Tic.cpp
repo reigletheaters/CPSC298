@@ -1,7 +1,7 @@
 
 // Program: TicTacToe.cpp
 // Purpose: This program is a game of Tic Tac Toe.
-// Author:  Jonthan Lopez
+// Author:  Andrew Reigle
 
 #include "Tictactoe.h"
 #include <cstdlib>
