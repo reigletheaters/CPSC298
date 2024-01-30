@@ -1,1 +1,88 @@
 
+#include <iostream>
+#include <cmath>
+
+const double PI = 3.14159265358979323846;
+
+class Shape {
+protected:
+    double m_width;
+    double m_height;
+    std::string m_strType;
+
+public:
+    Shape(double width, double height) : m_width(width), m_height(height), m_strType("Shape") {}
+
+    virtual ~Shape() {}
+
+    virtual void displayProperties() const {
+        std::cout << "Type: " << m_strType << ", Width: " << m_width << ", Height: " << m_height << std::endl;
+    }
+
+    virtual double area() const = 0;
+
+    virtual double perimeter() const = 0;
+
+    virtual void scale(double factor) {
+        m_width *= factor;
+        m_height *= factor;
+    }
+};
+
+class Rectangle : public Shape {
+public:
+    Rectangle(double width, double height) : Shape(width, height) {
+        m_strType = "Rectangle";
+    }
+
+    virtual ~Rectangle() {}
+
+    virtual double area() const override {
+        return m_width * m_height;
+    }
+
+    virtual double perimeter() const override {
+        return 2 * (m_width + m_height);
+    }
+};
+
+class Circle : public Shape {
+public:
+    Circle(double diameter) : Shape(diameter, diameter) {
+        m_strType = "Circle";
+    }
+
+    virtual ~Circle() {}
+
+    virtual double area() const override {
+        return 0.25 * PI * std::pow(m_width, 2);
+    }
+
+    virtual double perimeter() const override {
+        return PI * m_width;
+    }
+};
+
+int main() {
+    Shape* p_shapes[2];
+
+    p_shapes[0] = new Circle(2.0);
+    p_shapes[1] = new Rectangle(3.0, 2.0);
+
+    for (int i = 0; i < 2; ++i) {
+        p_shapes[i]->displayProperties();
+        std::cout << "Area: " << p_shapes[i]->area() << std::endl;
+        std::cout << "Perimeter: " << p_shapes[i]->perimeter() << std::endl;
+
+        p_shapes[i]->scale(2.0);
+
+        std::cout << "After scaling:" << std::endl;
+        p_shapes[i]->displayProperties();
+        std::cout << "Area: " << p_shapes[i]->area() << std::endl;
+        std::cout << "Perimeter: " << p_shapes[i]->perimeter() << std::endl;
+
+        delete p_shapes[i];
+    }
+
+    return 0;
+}
